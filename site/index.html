@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<title>Riding The L</title>
+	<meta charset="utf-8">
+	<meta name="description" content="Live feed of tweets with the hashtag #RidingTheL">
+
+    <link href='http://fonts.googleapis.com/css?family=Rambla:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+<style>
+body {
+    background-color: #050505;
+    color: #0092cb;
+    margin: 0px;
+    overflow: hidden;
+    font-family: 'Rambla', sans-serif;
+    font-size: 5vw;
+}
+.tweet{
+	margin: 0.5em;
+}
+.tweet em{
+	float: right;
+	font-style: normal;
+	font-size: 0.75em;
+}
+.avatar{
+	float: left;
+	width: 1.5em;
+	margin-right: 0.25em;
+}
+.user{
+	margin-bottom: 1em;
+}
+.user b{
+	font-size: 0.8em;
+	line-height: 1em;
+	display: block;
+}
+.user i{
+	color: #7194a1;
+	font-size: 0.7em;
+	font-style: normal;
+	line-height: 1em;
+	display: block;
+}
+.content{
+	color: #bbe1f0;
+}
+.content u{
+	color: #0092cb;
+	text-decoration: none;
+}
+h1 {
+  font-size: 5.9vw;
+}
+h2 {
+  font-size: 3.0vh;
+}
+p {
+  font-size: 2vmin;
+}
+</style>
+</head>
+<body>
+<div id="container">
+<script type="text/html" id="tweet_tmpl">
+
+	<div class="tweet">
+		<em><%= smallDateTime( created_at ) %></em>
+		<div class="user">
+			<img class="avatar" src="<%= user.profile_image_url %>">
+			<b><%= user.name %></b>
+			<i>@<%= user.screen_name %></i>
+		</div>
+		<div class="content">
+			<%= text.replace(/#ridingthel/i, '<u>#RidingTheL</u>') %>
+		</div>
+	</div>
+
+</script>
+</div>
+
+<script src="/microtemplating.js"></script>
+<script src="//localhost:8080/socket.io/socket.io.js"></script>
+<script>
+
+var socket = io.connect('http://localhost:8080/'),
+	tweetIds = [392000208436879360],
+	tweets = [{
+		"created_at":"Sun Oct 20 18:51:47 +0000 2013",
+		"id":392000208436879360,
+		"id_str":"392000208436879360",
+		"text":"Tweet your ride. #RidingTheL",
+		"source":"web",
+		"truncated":false,
+		"in_reply_to_status_id":null,
+		"in_reply_to_status_id_str":null,
+		"in_reply_to_user_id":null,
+		"in_reply_to_user_id_str":null,
+		"in_reply_to_screen_name":null,
+		"user":{
+			"id":54906888,
+			"id_str":"54906888",
+			"name":"Riding The L",
+			"screen_name":"ridingtheltrain",
+			"location":"Chicago, IL",
+			"url":"http://ridingthel.net",
+			"description":"Window displaying tweets with #RidingTheL",
+			"protected":false,
+			"followers_count":0,
+			"friends_count":0,
+			"listed_count":0,
+			"created_at":"Wed Jul 08 14:14:32 +0000 2009",
+			"favourites_count":0,
+			"utc_offset":-18000,
+			"time_zone":"Central Time (US & Canada)",
+			"geo_enabled":false,
+			"verified":false,
+			"statuses_count":1,
+			"lang":"en",
+			"contributors_enabled":false,
+			"is_translator":false,
+			"profile_background_color":"C0DEED",
+			"profile_background_image_url":"http://abs.twimg.com/images/themes/theme1/bg.png",
+			"profile_background_image_url_https":"https://abs.twimg.com/images/themes/theme1/bg.png",
+			"profile_background_tile":false,
+			"profile_image_url":"http://abs.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+			"profile_image_url_https":"https://abs.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+			"profile_link_color":"0084B4",
+			"profile_sidebar_border_color":"C0DEED",
+			"profile_sidebar_fill_color":"DDEEF6",
+			"profile_text_color":"333333",
+			"profile_use_background_image":true,
+			"default_profile":true,
+			"default_profile_image":true,
+			"following":null,
+			"follow_request_sent":null,
+			"notifications":null
+		},
+		"geo":null,
+		"coordinates":null,
+		"place":null,
+		"contributors":null,
+		"retweet_count":0,
+		"favorite_count":0,
+		"entities":{
+			"hashtags":[
+				{
+					"text":"RidingTheL",
+					"indices":[17,28]
+				}
+			],
+			"symbols":[],
+			"urls":[],
+			"user_mentions":[]
+		},
+		"favorited":false,
+		"retweeted":false,
+		"filter_level":"medium",
+		"lang":"en"
+	}];
+
+socket.on('tweets', addTweet );
+
+function addTweet(data) {
+	tweets.concat( data );
+	showTweet( tweets[ tweets.length - 1 ] );
+}
+
+function showTweet(tweet) {
+	var container = document.getElementById("container");
+	container.innerHTML = tmpl("tweet_tmpl", tweet);
+}
+
+function smallDateTime(date_str) {
+	if ( !date_str ) return '';
+	var date = new Date(date_str);
+	var milliseconds = date.getTime();
+	var now = new Date();
+	var then_day = date.getDate();
+	var then_month = date.getMonth() + 1;
+	var now_day = now.getDate();
+	var now_month = now.getMonth() + 1;
+	if ( ( then_day == now_day) && ( then_month == now_month ) ) {
+		return smallTime(milliseconds);
+	} else {
+		return smallDate(milliseconds) + ' ' + smallTime(milliseconds);
+	}
+}
+
+function smallDate(milliseconds) {
+	if ( !milliseconds ) return '';
+	var date = new Date(milliseconds);
+	var now = new Date();
+	var day = date.getDate();
+	var month = date.getMonth() + 1;
+	var year = date.getFullYear();
+	var curyear = now.getFullYear();
+	return month + '/' + (day < 10 ? '0' : '') + day + ( year != curyear ? ('/' + year) : '' );
+}
+
+function smallTime(milliseconds) {
+	var date = new Date(milliseconds);
+	var pm = false;
+	var hours = date.getHours();
+	var minutes = date.getMinutes();
+	if ( hours > 12 ) {
+		hours = hours - 12;
+		pm = true;
+	} else if ( hours == 0 ) {
+		hours = 12;
+	} else if ( hours == 12 ) {
+		pm = true;
+	}
+	return hours + ':' + (minutes < 10 ? '0' : '') + minutes + ( pm ? 'p' : 'a');
+}
+
+</script>
+</body>
+</html>
