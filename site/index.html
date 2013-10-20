@@ -181,14 +181,10 @@ socket.on('tweets', addTweet );
 
 function addTweet(data) {
 	if ( console && console.log ) console.log(data);
-	for (var i=0,l=data.length;i<l;i++) {
-		var thisTweet = data[i];
-		if ( thisTweet.retweeted_status ) thisTweet = thisTweet.retweeted_status;
-		if ( tweetIds.indexOf( thisTweet.id ) == -1 ) {
-			tweets.push( thisTweet );
-			tweetIds.push( thisTweet.id );
-		}
-	}
+	var thisTweet = data;
+	if ( thisTweet.retweeted_status ) thisTweet = thisTweet.retweeted_status;
+	tweets.push( thisTweet );
+	tweetIds.push( thisTweet.id );
 	if ( console && console.log ) console.log(tweets);
 	showTweet( tweets[ tweets.length - 1 ] );
 }

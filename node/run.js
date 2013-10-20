@@ -44,6 +44,6 @@ function twitterInit() {
 function twitterConnect(stream) {
 	stream.on('data', function(tweet) {
 		tweets.push( tweet );
-		io.sockets.emit( 'tweets', [tweet] );
+		io.sockets.emit( 'tweets', tweet );
 	});
 }
