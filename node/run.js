@@ -25,7 +25,7 @@ function init() {
 // ========================== Socket.io ==========================
 
 function socketInit() {
-	io = socketIo.listen(8080);
+	io = socketIo.listen(88);
 	io.sockets.on('connection', socketConnect);
 }
 
