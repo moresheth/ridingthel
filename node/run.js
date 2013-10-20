@@ -25,12 +25,12 @@ function init() {
 // ========================== Socket.io ==========================
 
 function socketInit() {
-	io = socketIo.listen(88);
+	io = socketIo.listen(8080);
 	io.sockets.on('connection', socketConnect);
 }
 
 function socketConnect(socket) {
-	socket.emit('tweets', tweets);
+	if ( tweets.length > 0 ) socket.emit('tweets', tweets[ tweets.length - 1 ] );
 }
 
 
