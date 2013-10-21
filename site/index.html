@@ -16,6 +16,7 @@ body {
     overflow: hidden;
     font-family: 'Rambla', sans-serif;
     font-size: 5vw;
+    letter-spacing: 0.01em;
 }
 .tweet{
 	margin: 0;
@@ -54,6 +55,10 @@ body {
 	background: rgba(0,0,0,0.7);
 	padding: 0.5em;
 	position: relative;
+	line-height: 1.2em;
+}
+.content span{
+	font-size: 1.5em;
 }
 .content u{
 	color: #0092cb;
@@ -76,7 +81,7 @@ body {
 			<b>Riding The L</b>
 			<i>@ridingtheltrain</i>
 		</div>
-		<div class="content">Tweet your ride. <u>#RidingTheL</u></div>
+		<div class="content"><span>Tweet your ride. <u>#RidingTheL</u></span></div>
 	</div>
 </div>
 
@@ -92,7 +97,7 @@ body {
 			<b><%= user.name %></b>
 			<i>@<%= user.screen_name %></i>
 		</div>
-		<div class="content"><%= text.replace(/#ridingthel/i, '<u>#RidingTheL</u>').replace(/\shttp\:\/\/t\.co\/\w+/g, '') %></div>
+		<div class="content"><span><%= text.replace(/#ridingthel/i, '<u>#RidingTheL</u>').replace(/\shttp\:\/\/t\.co\/\w+/g, '') %></span></div>
 	</div>
 
 </script>
