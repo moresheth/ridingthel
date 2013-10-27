@@ -26,6 +26,7 @@ function init() {
 
 function socketInit() {
 	io = socketIo.listen(8080);
+	io.set('log level', 1);
 	io.sockets.on('connection', socketConnect);
 }
 
