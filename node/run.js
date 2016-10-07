@@ -1,5 +1,5 @@
 var socketIo        = require('socket.io'),
-	twitter         = require('ntwitter'),
+	twitter         = require('twitter'),
 	// Fill these in with your own bidness.
 	twitAuth        = {
 		consumer_key: '',
@@ -38,13 +38,36 @@ function socketConnect(socket) {
 // ========================== Twitter Stream ==========================
 
 function twitterInit() {
-	t = new twitter( twitAuth );
-	t.stream('statuses/filter', { track: 'ridingthel', follow: '54906888' }, twitterConnect );
+
+
+twit = new twitter( twitAuth );
+
+twit.stream('statuses/sample', function(stream) {
+    stream.on('data', function(data) {
+        console.log( data );
+    });
+});
+
+/*
+twit.stream('user', {track:'moresheth'}, function(stream) {
+    stream.on('data', function(data) {
+        console.log( data );
+    });
+    // Disconnect stream after five seconds
+    setTimeout(stream.destroy, 5000);
+});
+*/
+
+//console.log('twitterInit');
+//	t = new twitter( twitAuth );
+//console.log(t);
+//	t.stream('statuses/filter', { track: 'ridingthel', follow: '54906888' }, twitterConnect );
 }
 
 function twitterConnect(stream) {
 	stream.on('data', function(tweet) {
 		tweets.push( tweet );
+console.log(tweet);
 		io.sockets.emit( 'tweets', tweet );
 	});
 }
