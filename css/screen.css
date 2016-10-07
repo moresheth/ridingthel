@@ -1,0 +1,60 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+html,
+body{
+	height: 100%;
+	min-height: 100%;
+}
+body{
+	background: #292a2a;
+	color: #111;
+	color: rgba(20,20,20,0.9);
+	line-height: 1.2;
+	font-family: Helvetica,Roboto,"Segoe UI",Calibri,sans-serif;
+}
+
+#background{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: -1;
+}
+.pic{
+	display: block;
+	margin: 5vh auto;
+	width: 50vw;
+	box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+#message{
+	display: block;
+	margin: 5vh auto;
+	width: 50vw;
+	background: #fff;
+	background: rgba(255,255,255,0.5);
+	box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+#message p{
+	padding: 1em;
+	font-size: 1.5em;
+}
+#twitter-widget-0{
+	display: block !important;
+	margin: 5vh auto !important;
+	width: 50vw !important;
+	box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+@media (orientation:portrait) {
+	.pic{
+		width: 80vw;
+	}
+	#message{
+		width: 80vw;
+	}
+	#twitter-widget-0{
+		width: 80vw !important;
+	}
+}
